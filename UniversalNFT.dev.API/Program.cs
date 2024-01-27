@@ -1,5 +1,5 @@
 using UniversalNFT.dev.API.Services.Images;
-using UniversalNFT.dev.API.Services.Mapping;
+using UniversalNFT.dev.API.Services.Rules;
 using UniversalNFT.dev.API.Services.Providers;
 using UniversalNFT.dev.API.Services.XRPL;
 
@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen(service => service.EnableAnnotations());
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<XRPLService>();
 builder.Services.AddSingleton<ImageService>();
-builder.Services.AddSingleton<OnXRPService>();
-builder.Services.AddSingleton<RulesEngine>();
+builder.Services.AddSingleton<IOnXRPService, OnXRPService>();
+builder.Services.AddSingleton<IRulesEngine, RulesEngine>();
 
 var app = builder.Build();
 

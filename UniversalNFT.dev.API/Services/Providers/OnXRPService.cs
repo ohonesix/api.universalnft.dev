@@ -2,14 +2,14 @@
 
 namespace UniversalNFT.dev.API.Services.Providers;
 
-public class OnXRPService
+public class OnXRPService : IOnXRPService
 {
     private readonly HttpClient _httpClient;
 
     private const string ApiUrl = "https://marketplace-api.onxrp.com/api/metadata/";
 
     public OnXRPService()
-	{
+    {
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Accept.Clear();
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

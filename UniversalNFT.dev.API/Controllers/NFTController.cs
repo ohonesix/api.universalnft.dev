@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.Annotations;
 using UniversalNFT.dev.API.Models.API;
 using UniversalNFT.dev.API.Services.Images;
-using UniversalNFT.dev.API.Services.Mapping;
+using UniversalNFT.dev.API.Services.Rules;
 using UniversalNFT.dev.API.Services.XRPL;
 
 namespace UniversalNFT.dev.API.Controllers
@@ -12,13 +12,13 @@ namespace UniversalNFT.dev.API.Controllers
     public class NFTController : ControllerBase
     {
         private readonly XRPLService _xrplService;
-        private readonly RulesEngine _rulesEngine;
+        private readonly IRulesEngine _rulesEngine;
         private readonly ImageService _imageService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public NFTController(
             XRPLService xrplService,
-            RulesEngine rulesEngine,
+            IRulesEngine rulesEngine,
             ImageService imageService,
             IHttpContextAccessor httpContextAccessor)
         {

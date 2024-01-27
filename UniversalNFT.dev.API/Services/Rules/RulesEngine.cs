@@ -4,16 +4,15 @@ using UniversalNFT.dev.API.Models.DTO;
 using UniversalNFT.dev.API.Services.IPFS;
 using UniversalNFT.dev.API.Services.Providers;
 
-namespace UniversalNFT.dev.API.Services.Mapping;
+namespace UniversalNFT.dev.API.Services.Rules;
 
-public class RulesEngine
+public class RulesEngine : IRulesEngine
 {
-    private readonly HttpClient _httpClient;
-    private readonly OnXRPService _onXRPService;
+    private readonly HttpClient _httpClient = new HttpClient();
+    private readonly IOnXRPService _onXRPService;
 
-    public RulesEngine(OnXRPService onXRPService)
-	{
-        _httpClient = new HttpClient();
+    public RulesEngine(IOnXRPService onXRPService)
+    {
         _onXRPService = onXRPService;
     }
 
@@ -29,7 +28,7 @@ public class RulesEngine
             var imageFromMetadata = ExtractImageSynonymsUrl(data);
             if (!string.IsNullOrWhiteSpace(imageFromMetadata))
                 return IPFSService.NormaliseIPFSUrl(imageFromMetadata);
-        } 
+        }
 
         // Check if the on-chain URI is a direct link to the image (yay!)
         var uriAsHttp = ExtractHttpImageUrl(nfToken.URI);
@@ -79,7 +78,7 @@ public class RulesEngine
             return match.Value;
 
         return string.Empty;
-    }   
+    }
 
     private string ExtractIpfsImageUrl(string input)
     {

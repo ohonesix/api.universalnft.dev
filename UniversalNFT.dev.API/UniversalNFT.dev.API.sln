@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalNFT.dev.API", "UniversalNFT.dev.API.csproj", "{13BC1F8A-DA03-4627-9F21-F0DDB5E333D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversalNFT.dev.API.Tests", "..\UniversalNFT.dev.API.Tests\UniversalNFT.dev.API.Tests.csproj", "{C40C14A1-E148-488F-BFE5-A9C76DEF158D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{13BC1F8A-DA03-4627-9F21-F0DDB5E333D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13BC1F8A-DA03-4627-9F21-F0DDB5E333D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13BC1F8A-DA03-4627-9F21-F0DDB5E333D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C40C14A1-E148-488F-BFE5-A9C76DEF158D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40C14A1-E148-488F-BFE5-A9C76DEF158D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40C14A1-E148-488F-BFE5-A9C76DEF158D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40C14A1-E148-488F-BFE5-A9C76DEF158D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
