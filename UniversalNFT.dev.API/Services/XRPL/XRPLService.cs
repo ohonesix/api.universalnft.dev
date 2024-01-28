@@ -37,6 +37,8 @@ public class XRPLService : IXRPLService
                                             }
                                         ]}";
 
+            // TODO handle paging in response
+
             // Load account NFTs from Rippled
             var response = await _httpClient.PostAsync(_rippledUrl, new StringContent(body));
             if (response.IsSuccessStatusCode)
@@ -59,7 +61,7 @@ public class XRPLService : IXRPLService
                             var convertedUri = Encoding.UTF8.GetString(HexHelper.StringToByteArray(foundNft.URI));
 
                             // Normalise it
-                            foundNft.URI = IPFSService.NormaliseIPFSUrl(convertedUri);
+                            foundNft.URI = IPFSService.NormaliseUrl(convertedUri);
                         }
 
                         return foundNft;

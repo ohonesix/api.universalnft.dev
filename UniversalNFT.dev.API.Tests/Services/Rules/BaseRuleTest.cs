@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Models.DTO;
 using UniversalNFT.dev.API.Services.Providers;
 using UniversalNFT.dev.API.Services.Rules;
@@ -9,6 +10,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
     {
         public required IRulesEngine _classUnderTest;
         public required IOnXRPService _mockOnXRPService;
+        public required IHttpFacade _mockHttpFacade;
 
         public required RippledAccountNFToken Token;
 
@@ -16,8 +18,9 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
         public void Setup()
         {
             _mockOnXRPService = Substitute.For<IOnXRPService>();
+            _mockHttpFacade = Substitute.For<IHttpFacade>();
 
-            _classUnderTest = new RulesEngine(_mockOnXRPService);
+            _classUnderTest = new RulesEngine(_mockOnXRPService, _mockHttpFacade);
 
             Token = new RippledAccountNFToken
             {

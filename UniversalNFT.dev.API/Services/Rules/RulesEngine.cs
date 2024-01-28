@@ -1,17 +1,23 @@
 ﻿using System.Text.RegularExpressions;
+using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Models.DTO;
+using UniversalNFT.dev.API.Services.Images;
+using UniversalNFT.dev.API.Services.IPFS;
 using UniversalNFT.dev.API.Services.Providers;
 
 namespace UniversalNFT.dev.API.Services.Rules;
 
 public class RulesEngine : IRulesEngine
 {
-    private readonly HttpClient _httpClient = new HttpClient();
     private readonly IOnXRPService _onXRPService;
+    private readonly IHttpFacade _httpFacade;
 
-    public RulesEngine(IOnXRPService onXRPService)
+    public RulesEngine(
+        IOnXRPService onXRPService,
+        IHttpFacade httpFacade)
     {
         _onXRPService = onXRPService;
+        _httpFacade = httpFacade;
     }
 
     public async Task<string?> ProcessNFToken(RippledAccountNFToken nfToken)
@@ -23,9 +29,11 @@ public class RulesEngine : IRulesEngine
             var data = await _onXRPService.GetImageFromMetadata(nfToken.NFTokenID);
 
             // Extract the image
-            var imageFromMetadata = ExtractImageSynonymsUrl(data);
+            var imageFromMetadata = ExtractIfpsImageSynonymsUrl(data);
             if (!string.IsNullOrWhiteSpace(imageFromMetadata))
                 return imageFromMetadata;
+
+            return null;
         }
 
         // Check if the on-chain URI is a direct link to the image (yay!)
@@ -37,29 +45,39 @@ public class RulesEngine : IRulesEngine
         if (!string.IsNullOrWhiteSpace(uriAsIpfsFormatted))
             return uriAsIpfsFormatted;
 
-        // No on-chain link to the media directly.
-        // Download the URI and see what it is
-        var response = await _httpClient.GetAsync(nfToken.URI);
-        if (response.IsSuccessStatusCode)
-        {
-            // Parse success response
-            var data = await response.Content.ReadAsStringAsync();
+        // No on-chain link to the media directly, normalise URI
+        var onChainUrl = IPFSService.NormaliseUrl(nfToken.URI);
 
+        // Download the URI and see what it is
+        var metadata = await _httpFacade.GetData(onChainUrl);
+        if (!string.IsNullOrWhiteSpace(metadata))
+        {
             // Check if we have multiple ipfs urls
-            if (CountIpfsUrls(data) > 1)
+            if (IPFSService.CountIpfsUrls(metadata) > 1)
             {
-                // We do, use smarter rules to try find image related fields
-                var imageSynonymsUrl = ExtractImageSynonymsUrl(data);
+                // We do, attempt to extract from JSON
+                var imageSynonymsFromJson = JsonImageExtractor.ExtractImageUrl(metadata);
+                if (!string.IsNullOrWhiteSpace(imageSynonymsFromJson))
+                    return imageSynonymsFromJson;
+
+                // Use smarter rules to try find image related fields
+                var imageSynonymsUrl = ExtractIfpsImageSynonymsUrl(metadata);
                 if (!string.IsNullOrWhiteSpace(imageSynonymsUrl))
                     return imageSynonymsUrl;
             }
 
+            // Attempt to extract from JSON
+            var imageFromJson = JsonImageExtractor.ExtractImageUrl(metadata);
+            if (!string.IsNullOrWhiteSpace(imageFromJson))
+                return imageFromJson;
+
             // Attempt to extract an image url
-            var httpImageUrl = ExtractHttpImageUrl(data);
+            var httpImageUrl = ExtractHttpImageUrl(metadata);
             if (!string.IsNullOrWhiteSpace(httpImageUrl))
                 return httpImageUrl;
 
-            var ipfsFormattedImageUrl = ExtractIpfsImageUrl(data);
+            // Attempt to extract formatted Ipfs url
+            var ipfsFormattedImageUrl = ExtractIpfsImageUrl(metadata);
             if (!string.IsNullOrWhiteSpace(ipfsFormattedImageUrl))
                 return ipfsFormattedImageUrl;
         }
@@ -89,7 +107,7 @@ public class RulesEngine : IRulesEngine
         return string.Empty;
     }
 
-    private string ExtractImageSynonymsUrl(string input)
+    private string ExtractIfpsImageSynonymsUrl(string input)
     {
         string pattern = @"(?:image|picture|image_url)\S+?(ipfs://\S+?\.(?:png|jpe?g|gif)|ipfs://\S+?"")";
         Regex regex = new Regex(pattern);
@@ -98,11 +116,5 @@ public class RulesEngine : IRulesEngine
             return match.Groups[1].Value.Contains('"') ? match.Groups[1].Value.Replace("\"", "") : match.Groups[1].Value;
 
         return string.Empty;
-    }
-
-    private int CountIpfsUrls(string input)
-    {
-        string pattern = @"ipfs://";
-        return Regex.Matches(input, pattern)?.Count ?? 0;
     }
 }

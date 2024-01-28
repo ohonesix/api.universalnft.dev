@@ -40,8 +40,7 @@ namespace UniversalNFT.dev.API.Services.NFT
             if (string.IsNullOrWhiteSpace(imageUrl))
                 return null;
 
-            if (imageUrl.StartsWith("ipfs://"))
-                imageUrl = IPFSService.NormaliseIPFSUrl(imageUrl);
+            imageUrl = IPFSService.NormaliseUrl(imageUrl);
 
             // We have an imageUrl extracted! Create the thumbnail if it doesn't exist
             // in our cache.

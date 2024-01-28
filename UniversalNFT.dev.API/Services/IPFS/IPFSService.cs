@@ -1,19 +1,33 @@
-﻿namespace UniversalNFT.dev.API.Services.IPFS;
+﻿using System.Text.RegularExpressions;
+
+namespace UniversalNFT.dev.API.Services.IPFS;
 
 public static class IPFSService
 {
-    public static string NormaliseIPFSUrl(string url)
+    public static string NormaliseUrl(string url)
     {
-        if (url.StartsWith("ipfs://"))
-        {
-            if (url.IndexOf("/ipfs/") == -1)
-            {
-                url = url.Replace("ipfs://", "ipfs://ipfs/");
-            }
+        // Is it well formed
+        if (url.StartsWith("http"))
+            return url;
 
-            url = url.Replace("ipfs://", "https://ipfs.io/");
+        // Add ipfs to the start if it doesn't have it
+        if (!url.StartsWith("ipfs://"))
+            url = "ipfs://" + url;
+
+        // Add /ipfs if it doesn't have it
+        if (url.IndexOf("/ipfs/") == -1)
+        {
+            url = url.Replace("ipfs://", "ipfs://ipfs/");
         }
 
+        url = url.Replace("ipfs://", "https://ipfs.io/");
+
         return url;
+    }
+
+    public static int CountIpfsUrls(string input)
+    {
+        string pattern = @"ipfs://";
+        return Regex.Matches(input, pattern)?.Count ?? 0;
     }
 }

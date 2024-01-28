@@ -1,3 +1,4 @@
+using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Services.Images;
 using UniversalNFT.dev.API.Services.NFT;
 using UniversalNFT.dev.API.Services.Providers;
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(service => service.EnableAnnotations());
 
+builder.Services.AddSingleton<IHttpFacade, HttpFacade>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IXRPLService, XRPLService>();
 builder.Services.AddSingleton<IImageService, ImageService>();

@@ -10,7 +10,19 @@
 
         public const string MetaIpfs = "ipfs://ohonesixOHONESIXohonesixOHONESIXohonesix016016";
 
+        public const string MetaIpfsRaw = "ohonesixOHONESIXohonesixOHONESIXohonesix016016";
+
+        public const string MetaIpfsRawWithFile = "ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
+
+        public const string MetaNormalisedIpfsUrl = "https://ipfs.io/ipfs/metasixOHONESIXohonesixOHONESIXohonesix016016";
+
+        public const string MetaJsonUrl = "https://ohonesix.com/example/file.json";
+
         public const string NormalisedIpfsUrl = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
+
+        public const string NormalisedIpfsUrlWithFile = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
+
+        public const string DirectImageUrl = "https://ohonesix.com/example/image.png";
 
         public const int Serial = 01616;
 
