@@ -12,8 +12,8 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
 
         public required RippledAccountNFToken Token;
 
-        [OneTimeSetUp]
-        public void GlobalSetup()
+        [SetUp]
+        public void Setup()
         {
             _mockOnXRPService = Substitute.For<IOnXRPService>();
 

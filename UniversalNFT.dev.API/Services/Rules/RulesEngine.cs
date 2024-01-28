@@ -27,7 +27,7 @@ public class RulesEngine : IRulesEngine
             // Extract the image
             var imageFromMetadata = ExtractImageSynonymsUrl(data);
             if (!string.IsNullOrWhiteSpace(imageFromMetadata))
-                return IPFSService.NormaliseIPFSUrl(imageFromMetadata);
+                return imageFromMetadata;
         }
 
         // Check if the on-chain URI is a direct link to the image (yay!)
@@ -37,7 +37,7 @@ public class RulesEngine : IRulesEngine
 
         var uriAsIpfsFormatted = ExtractIpfsImageUrl(nfToken.URI);
         if (!string.IsNullOrWhiteSpace(uriAsIpfsFormatted))
-            return IPFSService.NormaliseIPFSUrl(uriAsIpfsFormatted);
+            return uriAsIpfsFormatted;
 
         // No on-chain link to the media directly.
         // Download the URI and see what it is
@@ -53,7 +53,7 @@ public class RulesEngine : IRulesEngine
                 // We do, use smarter rules to try find image related fields
                 var imageSynonymsUrl = ExtractImageSynonymsUrl(data);
                 if (!string.IsNullOrWhiteSpace(imageSynonymsUrl))
-                    return IPFSService.NormaliseIPFSUrl(imageSynonymsUrl);
+                    return imageSynonymsUrl;
             }
 
             // Attempt to extract an image url
@@ -63,7 +63,7 @@ public class RulesEngine : IRulesEngine
 
             var ipfsFormattedImageUrl = ExtractIpfsImageUrl(data);
             if (!string.IsNullOrWhiteSpace(ipfsFormattedImageUrl))
-                return IPFSService.NormaliseIPFSUrl(ipfsFormattedImageUrl);
+                return ipfsFormattedImageUrl;
         }
 
         return null;

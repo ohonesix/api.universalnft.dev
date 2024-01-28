@@ -3,14 +3,14 @@ using SixLabors.ImageSharp.Processing;
 
 namespace UniversalNFT.dev.API.Services.Images;
 
-public class ImageService
+public class ImageService : IImageService
 {
     private readonly HttpClient _httpClient;
 
-    public readonly string LocalImagePath = Path.Combine(Directory.GetCurrentDirectory(), "ImageCache");
+    private readonly string LocalImagePath = Path.Combine(Directory.GetCurrentDirectory(), "ImageCache");
 
     public ImageService()
-	{
+    {
         // Create local image path if it does not exist
         if (!Directory.Exists(LocalImagePath))
         {
@@ -18,6 +18,11 @@ public class ImageService
         }
 
         _httpClient = new HttpClient();
+    }
+
+    public string GetLocalImagePath()
+    {
+        return LocalImagePath;
     }
 
     public async Task<string?> CreateThumbnail(string imageUrl, string nfTokenId)

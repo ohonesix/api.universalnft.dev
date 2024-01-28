@@ -7,7 +7,7 @@ using UniversalNFT.dev.API.Services.IPFS;
 
 namespace UniversalNFT.dev.API.Services.XRPL;
 
-public class XRPLService
+public class XRPLService : IXRPLService
 {
     private readonly ILogger<XRPLService> _logger;
     private readonly HttpClient _httpClient;
@@ -15,7 +15,7 @@ public class XRPLService
     private const string _rippledUrl = "wss://xrplcluster.com";
 
     public XRPLService(ILogger<XRPLService> logger)
-	{
+    {
         _logger = logger;
 
         _httpClient = new HttpClient();
@@ -23,8 +23,8 @@ public class XRPLService
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-	public async Task<RippledAccountNFToken?> GetNFT(string tokenID, string ownerAccount)
-	{
+    public async Task<RippledAccountNFToken?> GetNFT(string tokenID, string ownerAccount)
+    {
         try
         {
             // Setup the request body to load account NFTs
