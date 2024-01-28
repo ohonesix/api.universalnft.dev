@@ -1,5 +1,4 @@
 using NSubstitute;
-using UniversalNFT.dev.API.Models.DTO;
 
 namespace UniversalNFT.dev.API.Tests.Services.Rules
 {
@@ -9,8 +8,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
         public async Task GivenNFT_ReturnsImageAsync()
         {
             // Arrange
-            _mockOnXRPService.GetImageFromMetadata(Token.NFTokenID)
-                .Returns("{\"dna\":\"705064feb136c1e9e265bbeb4e6e08bb89fcb49afc6d08d4baeddfdd06c92def\"," +
+            var metaJson = "{\"dna\":\"705064feb136c1e9e265bbeb4e6e08bb89fcb49afc6d08d4baeddfdd06c92def\"," +
                 "\"name\":\"XPUNKS #016\",\"description\":\"The XPUNK collection consists of 10,000 uniquely generated characters " +
                 "on a 24-by 24-pixel canvas. They are distinguished by their colourful traits and trademark X-mouth that represents their " +
                 "love for the XRPL.\",\"image\":\"" + TestConstants.MetaIpfs + "\"," +
@@ -22,13 +20,16 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
                 "{\"trait_type\":\"Piercings\",\"value\":\"No Attribute\"}],\"schema\":\"ipfs://QmNpi8rcXEkohca8iXu7zysKKSJYqCvBJn3xJwga8jXqWU\"," +
                 "\"nftType\":\"art.v0\",\"collection\":{\"name\":\"XPUNKS\",\"description\":\"The XPUNK collection consists of 10,000 " +
                 "uniquely generated characters on a 24-by-24-pixel canvas. They are distinguished by their colorful traits and trademark " +
-                "X-mouth that represents their love for the XRPL.\"}}");
+                "X-mouth that represents their love for the XRPL.\"}}";
+
+            _mockOnXRPService.GetImageFromMetadata(Token.NFTokenID)
+                .Returns(metaJson);
 
             // Act
             var result = await _classUnderTest.ProcessNFToken(Token);
 
             // Assert
-            Assert.AreEqual(TestConstants.MetaIpfs, result);
+            Assert.That(result, Is.EqualTo(TestConstants.MetaIpfs));
         }
     }
 }

@@ -9,7 +9,7 @@
         public const string TokenIssuer = "rnissue016OHONESIX016016016ohonesix";
 
         public const string MetaIpfs = "ipfs://ohonesixOHONESIXohonesixOHONESIXohonesix016016";
-        
+
         public const string NormalisedIpfsUrl = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
 
         public const int Serial = 01616;

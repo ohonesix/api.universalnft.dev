@@ -1,5 +1,4 @@
-﻿
-namespace UniversalNFT.dev.API.Services.Providers
+﻿namespace UniversalNFT.dev.API.Services.Providers
 {
     public interface IOnXRPService
     {

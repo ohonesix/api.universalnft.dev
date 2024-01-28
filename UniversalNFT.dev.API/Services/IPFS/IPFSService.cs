@@ -2,8 +2,8 @@
 
 public static class IPFSService
 {
-	public static string NormaliseIPFSUrl(string url)
-	{
+    public static string NormaliseIPFSUrl(string url)
+    {
         if (url.StartsWith("ipfs://"))
         {
             if (url.IndexOf("/ipfs/") == -1)

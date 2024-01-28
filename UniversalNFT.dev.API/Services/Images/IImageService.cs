@@ -1,5 +1,4 @@
-﻿
-namespace UniversalNFT.dev.API.Services.Images
+﻿namespace UniversalNFT.dev.API.Services.Images
 {
     public interface IImageService
     {

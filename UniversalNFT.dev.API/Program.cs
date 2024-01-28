@@ -1,8 +1,8 @@
 using UniversalNFT.dev.API.Services.Images;
-using UniversalNFT.dev.API.Services.Rules;
-using UniversalNFT.dev.API.Services.Providers;
-using UniversalNFT.dev.API.Services.XRPL;
 using UniversalNFT.dev.API.Services.NFT;
+using UniversalNFT.dev.API.Services.Providers;
+using UniversalNFT.dev.API.Services.Rules;
+using UniversalNFT.dev.API.Services.XRPL;
 
 var builder = WebApplication.CreateBuilder(args);
 

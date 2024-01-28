@@ -35,7 +35,7 @@ public class ImageService : IImageService
         var localImagePath = Path.Combine(LocalImagePath, fileName);
         if (!System.IO.File.Exists(localImagePath))
         {
-            // The image does not exist, download it from the URL               
+            // The image does not exist, download it from the URL
             var imageBytes = await _httpClient.GetByteArrayAsync(imageUrl);
 
             using (Image image = Image.Load(imageBytes))
@@ -71,7 +71,6 @@ public class ImageService : IImageService
         }
 
         return fileName;
-
     }
 
     public string GetContentType(string fileExtension)
@@ -81,10 +80,13 @@ public class ImageService : IImageService
             case ".jpg":
             case ".jpeg":
                 return "image/jpeg";
+
             case ".png":
                 return "image/png";
+
             case ".gif":
                 return "image/gif";
+
             default:
                 return "application/octet-stream";
         }

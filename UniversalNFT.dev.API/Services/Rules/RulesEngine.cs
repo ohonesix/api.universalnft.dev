@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using UniversalNFT.dev.API.Models.DTO;
-using UniversalNFT.dev.API.Services.IPFS;
 using UniversalNFT.dev.API.Services.Providers;
 
 namespace UniversalNFT.dev.API.Services.Rules;
@@ -108,5 +106,3 @@ public class RulesEngine : IRulesEngine
         return Regex.Matches(input, pattern)?.Count ?? 0;
     }
 }
-
-
