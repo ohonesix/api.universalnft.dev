@@ -25,9 +25,13 @@
         public const string MetaJsonUrl = "https://ohonesix.com/example/file.json";
 
         // Image stuff
+        public const string IpfsRawWithFile = "ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
+
         public const string IpfsWithFile = "ipfs://ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
 
         public const string IpfsDoubleWithFile = "ipfs://ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
+
+        public const string ipfsWithParamFile = "ipfs://ohonesixOHONESIXohonesixOHONESIXohonesix016016?filename=ohonesix";
 
         public const string NormalisedIpfsUrl = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
 
