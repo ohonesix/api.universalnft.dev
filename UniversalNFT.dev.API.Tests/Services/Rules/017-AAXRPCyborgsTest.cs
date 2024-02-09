@@ -15,7 +15,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
   ""nftType"": ""art.v0"",
   ""name"": ""XRP Cyborg #222"",
   ""description"": ""The A.A. XRP Cyborgs are here to join and support the A.A. Family. The understanders of the future will not be humans but what we choose to call 'cyborgs' that will have designed and built themselves. DIE as a human or LIVE forever as an XRP Cyborg!"",
-  ""image"": """ + TestConstants.IpfsWithFile + @""",
+  ""image"": ""ipfs://bafybeibqve5d6zmtsdhlyo62iiibcmndthz6txekj5coxnfbyy7bfh7cda/222.png"",
   ""image_url"": ""ipfs://bafybeibqve5d6zmtsdhlyo62iiibcmndthz6txekj5coxnfbyy7bfh7cda/222.png"",
   ""category"": ""art"",
   ""content_type"": ""image/png"",
@@ -36,7 +36,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
             var result = await _classUnderTest.ProcessNFToken(Token);
 
             // Assert
-            Assert.That(result, Is.EqualTo(TestConstants.IpfsWithFile));
+            Assert.That(result, Is.EqualTo("ipfs://bafybeibqve5d6zmtsdhlyo62iiibcmndthz6txekj5coxnfbyy7bfh7cda/222.png"));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
             var metaJson = @"{
   ""name"": ""xShroom #2887"",
   ""description"": ""xShrooms, Forage One. An 8k genesis collection by Jebzie."",
-  ""image"": """ + TestConstants.IpfsWithFile + @""",
+  ""image"": ""ipfs://bafybeibeuzupumno4jmqk2okzad6ca4yedfm7iil4usqqdcjjlec76kxbm/2887.png"",
   ""license"": ""CC0"",
   ""attributes"": [
     {
@@ -49,7 +49,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
             var result = await _classUnderTest.ProcessNFToken(Token);
 
             // Assert
-            Assert.That(result, Is.EqualTo(TestConstants.IpfsWithFile));
+            Assert.That(result, Is.EqualTo("ipfs://bafybeibeuzupumno4jmqk2okzad6ca4yedfm7iil4usqqdcjjlec76kxbm/2887.png"));
         }
     }
 }

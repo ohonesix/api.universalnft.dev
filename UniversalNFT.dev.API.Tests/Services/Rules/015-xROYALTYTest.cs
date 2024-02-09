@@ -50,7 +50,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
   ""external_link"": """",
   ""audio"": """",
   ""name"": ""xROYALTY #1175"",
-  ""image"": """ + TestConstants.NormalisedIpfsUrlWithFile + @""",
+  ""image"": ""https://xroyalty.mypinata.cloud/ipfs/QmThbHUWs52d1H48nwXYJxBQgd7bsYbpkUacS3LzL8ogri/1175.png"",
   ""taxon"": 32,
   ""description"": ""xROYALTY - Battle Against Our Own Consciousness"",
   ""schema"": ""ipfs://QmNpi8rcXEkohca8iXu7zysKKSJYqCvBJn3xJwga8jXqWU"",
@@ -64,7 +64,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
             var result = await _classUnderTest.ProcessNFToken(Token);
 
             // Assert
-            Assert.That(result, Is.EqualTo(TestConstants.NormalisedIpfsUrlWithFile));
+            Assert.That(result, Is.EqualTo("https://xroyalty.mypinata.cloud/ipfs/QmThbHUWs52d1H48nwXYJxBQgd7bsYbpkUacS3LzL8ogri/1175.png"));
         }
     }
 }
