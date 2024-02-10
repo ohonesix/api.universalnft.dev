@@ -1,5 +1,4 @@
 using AspNetCoreRateLimit;
-using SixLabors.ImageSharp;
 using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Services.CacheCleanup;
 using UniversalNFT.dev.API.Services.Images;
@@ -17,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(service => service.EnableAnnotations());
 
 // DI
+builder.Services.Configure<XRPLSettings>(builder.Configuration.GetSection("XRPLSettings"));
 builder.Services.AddSingleton<IHttpFacade, HttpFacade>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IXRPLService, XRPLService>();

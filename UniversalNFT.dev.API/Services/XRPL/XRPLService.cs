@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using UniversalNFT.dev.API.Helpers;
 using UniversalNFT.dev.API.Models.DTO;
 using UniversalNFT.dev.API.Services.IPFS;
@@ -9,13 +10,13 @@ namespace UniversalNFT.dev.API.Services.XRPL;
 
 public class XRPLService : IXRPLService
 {
+    private readonly XRPLSettings _xrplSettings;
     private readonly ILogger<XRPLService> _logger;
     private readonly HttpClient _httpClient;
 
-    private const string _rippledUrl = "wss://xrplcluster.com";
-
-    public XRPLService(ILogger<XRPLService> logger)
+    public XRPLService(IOptions<XRPLSettings> xrplSettings, ILogger<XRPLService> logger)
     {
+        _xrplSettings = xrplSettings.Value;
         _logger = logger;
 
         _httpClient = new HttpClient();
@@ -38,7 +39,7 @@ public class XRPLService : IXRPLService
                                         ]}";
 
             // Load account NFTs from Rippled
-            var response = await _httpClient.PostAsync(_rippledUrl, new StringContent(body));
+            var response = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress, new StringContent(body));
             if (response.IsSuccessStatusCode)
             {
                 // Parse success response
@@ -84,7 +85,8 @@ public class XRPLService : IXRPLService
                     // host your own Rippled node and remove the next line! :)
                     Thread.Sleep(200);
 
-                    var seekResponse = await _httpClient.PostAsync(_rippledUrl, new StringContent(body));
+                    var seekResponse = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress, 
+                        new StringContent(body));
                     if (seekResponse.IsSuccessStatusCode)
                     {
                         // Parse success response
