@@ -8,7 +8,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
     // For 50+ we don't check the Token.URI format and just validate the metadata json
     // as its quite likely there won't be further variation.
     // Any reported variation in Token.URI would be worthy of its own test, if found.
-    public class FiftyToNinetyNineTests : BaseRuleTest
+    public class _50To_99Tests : BaseRuleTest
     {
         [TestCase("legoxpunks", "ipfs://bafybeicaur7ie7lrupnxekqakqh3u2rasvlrddwwoncbaah2fjjltziesa/1678663286906.png", @"{""attributes"":[{""description"":""1-background"",""trait_type"":""1-background"",""value"":""turquoise""},{""description"":""2-skin"",""trait_type"":""2-skin"",""value"":""lightandbrown""},{""description"":""3-frame"",""trait_type"":""3-frame"",""value"":""frame""},{""description"":""4-beard"",""trait_type"":""4-beard"",""value"":""blondy""},{""description"":""5-eyes"",""trait_type"":""5-eyes"",""value"":""close""},{""description"":""6-wearing"",""trait_type"":""6-wearing"",""value"":""blank""},{""description"":""7-mouth"",""trait_type"":""7-mouth"",""value"":""boring""},{""description"":""8-glass"",""trait_type"":""8-glass"",""value"":""blank""},{""description"":""9-accessories"",""trait_type"":""9-accessories"",""value"":""longandsilverandearing""}],""collection"":{""name"":""legoxpunks"",""family"":""Legoxpunks""},""video"":"""",""animation"":"""",""external_link"":"""",""audio"":"""",""name"":""LegoXpunk #3411"",""image"":""ipfs://bafybeicaur7ie7lrupnxekqakqh3u2rasvlrddwwoncbaah2fjjltziesa/1678663286906.png"",""taxon"":8566,""description"":""Lego created Punks on the XRPL"",""schema"":""ipfs://QmNpi8rcXEkohca8iXu7zysKKSJYqCvBJn3xJwga8jXqWU"",""nftType"":""art.v0"",""id"":""714811d10bc2a863ad5817e6ac16441a:1678663286739"",""file"":""""}")]
 
@@ -87,7 +87,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
         [TestCase("PNKs.", "https://arweave.net/sg95PJOkw_rqhf00hgBmD_AcnB2ndhOIzZ_uPUk-Mgg/PNKs._1609.png", @"{ ""name"": ""PNKs. 1609"", ""image"": ""https://arweave.net/sg95PJOkw_rqhf00hgBmD_AcnB2ndhOIzZ_uPUk-Mgg/PNKs._1609.png"", ""collection"": { ""name"": ""PNKs."", ""description"": ""5890 High-Res 3D Punks."", ""image"": ""https://arweave.net/oxkJ4b1CuSEGuDaqzEIbFk59AHNjKBgafSuTdqpuiTQ"" }, ""attributes"": [ { ""trait_type"": ""Ears"", ""value"": ""No Attribute"" }, { ""trait_type"": ""Eyes"", ""value"": ""Tech Glasses"" }, { ""trait_type"": ""Face"", ""value"": ""No Attribute"" }, { ""trait_type"": ""Head"", ""value"": ""Gray Beanie"" }, { ""trait_type"": ""Mouth"", ""value"": ""Candy Stick"" }, { ""trait_type"": ""Neck"", ""value"": ""Black XRP Chain"" }, { ""trait_type"": ""Type"", ""value"": ""Male 1"" } ] }")]
 
         //[TestCase("", "", @"")]
-        public async Task GivenFiftyToNinetyNineNFT_ReturnsImageAsync(
+        public async Task Given_50To_99NFT_ReturnsImageAsync(
             string projectName,
             string image,
             string metaJson)

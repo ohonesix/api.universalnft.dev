@@ -6,7 +6,7 @@ namespace UniversalNFT.dev.API.Services.Images
     {
         public static string ExtractImageUrl(string jsonString)
         {
-            string[] possiblePropertyNames = ["image", "image_url", "imageurl", "picture", "data", "url"];
+            string[] possiblePropertyNames = ["image", "image_url", "imageurl", "picture", "picture_url", "photo", "data", "url"];
 
             using (JsonDocument doc = JsonDocument.Parse(jsonString))
             {

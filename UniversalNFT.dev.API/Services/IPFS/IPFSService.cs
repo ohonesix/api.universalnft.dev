@@ -20,7 +20,7 @@ public static class IPFSService
             url = url.Replace("ipfs://", "ipfs://ipfs/");
         }
 
-        url = url.Replace("ipfs://", "https://ipfs.io/");
+        url = url.Replace("ipfs://", "https://cloudflare-ipfs.com/");
 
         return url;
     }

@@ -18,9 +18,9 @@
 
         public const string MetaIpfsRawWithFile = "ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
 
-        public const string MetaNormalisedIpfsUrl = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
+        public const string MetaNormalisedIpfsUrl = "https://cloudflare-ipfs.com/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
 
-        public const string MetaNormalisedIpfsUrlWithFile = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/meta.json";
+        public const string MetaNormalisedIpfsUrlWithFile = "https://cloudflare-ipfs.com/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/meta.json";
 
         public const string MetaJsonUrl = "https://ohonesix.com/example/file.json";
 
@@ -37,9 +37,9 @@
 
         public const string ipfsWithParamFile = "ipfs://ohonesixOHONESIXohonesixOHONESIXohonesix016016?filename=016";
 
-        public const string NormalisedIpfsUrl = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
+        public const string NormalisedIpfsUrl = "https://cloudflare-ipfs.com/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016";
 
-        public const string NormalisedIpfsUrlWithFile = "https://ipfs.io/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
+        public const string NormalisedIpfsUrlWithFile = "https://cloudflare-ipfs.com/ipfs/ohonesixOHONESIXohonesixOHONESIXohonesix016016/016.png";
 
         public const string DirectImageUrl = "https://ohonesix.com/example/image.png";
 

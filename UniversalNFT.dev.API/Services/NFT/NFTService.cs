@@ -30,32 +30,41 @@ namespace UniversalNFT.dev.API.Services.NFT
             string NFTokenID,
             string OwnerWalletAddress)
         {
-            // Load the NFT from XRPL
-            var responseNFToken = await _xrplService.GetNFT(NFTokenID, OwnerWalletAddress);
-            if (responseNFToken == null)
-                return null;
-
-            // Download and extract the media URL
-            var imageUrl = await _rulesEngine.ProcessNFToken(responseNFToken);
-            if (string.IsNullOrWhiteSpace(imageUrl))
-                return null;
-
-            imageUrl = IPFSService.NormaliseUrl(imageUrl);
-
-            // We have an imageUrl extracted! Create the thumbnail if it doesn't exist
-            // in our cache.
-            var thumbnailFilename = await _imageService.CreateThumbnail(imageUrl, NFTokenID);
-
-            return new UniversalNFTResponseV1
+            try
             {
-                NFTokenID = NFTokenID,
-                OwnerAccount = OwnerWalletAddress,
-                ImageThumbnailCacheUrl = !string.IsNullOrWhiteSpace(thumbnailFilename)
-                    ? $"https://{_httpContextAccessor.HttpContext.Request.Host}/v1.0/Image?file={thumbnailFilename}"
-                    : string.Empty,
-                ImageUrl = imageUrl,
-                Timestamp = DateTime.UtcNow.ToString("O")
-            };
+                // Load the NFT from XRPL
+                var responseNFToken = await _xrplService.GetNFT(NFTokenID, OwnerWalletAddress);
+                if (responseNFToken == null)
+                    return null;
+
+                // Download and extract the media URL
+                var imageUrl = await _rulesEngine.ProcessNFToken(responseNFToken);
+                if (string.IsNullOrWhiteSpace(imageUrl))
+                    return null;
+
+                imageUrl = IPFSService.NormaliseUrl(imageUrl);
+
+                // We have an imageUrl extracted! Create the thumbnail if it doesn't exist
+                // in our cache.
+                var thumbnailFilename = await _imageService.CreateThumbnail(imageUrl, NFTokenID);
+
+                return new UniversalNFTResponseV1
+                {
+                    NFTokenID = NFTokenID,
+                    OwnerAccount = OwnerWalletAddress,
+                    ImageThumbnailCacheUrl = !string.IsNullOrWhiteSpace(thumbnailFilename)
+                        ? $"https://{_httpContextAccessor.HttpContext.Request.Host}/v1.0/Image?file={thumbnailFilename}"
+                        : string.Empty,
+                    ImageUrl = imageUrl,
+                    Timestamp = DateTime.UtcNow.ToString("O")
+                };
+            }
+            catch (Exception ex)
+            {
+                // Log it if you care
+            }
+
+            return null;
         }
     }
 }
