@@ -7,14 +7,14 @@ public class ImageService : IImageService
 {
     private readonly HttpClient _httpClient;
 
-    private readonly string LocalImagePath = Path.Combine(Directory.GetCurrentDirectory(), "ImageCache");
+    private readonly string _localImagePath = Path.Combine(Directory.GetCurrentDirectory(), "ImageCache");
 
     public ImageService()
     {
         // Create local image path if it does not exist
-        if (!Directory.Exists(LocalImagePath))
+        if (!Directory.Exists(_localImagePath))
         {
-            Directory.CreateDirectory(LocalImagePath);
+            Directory.CreateDirectory(_localImagePath);
         }
 
         _httpClient = new HttpClient();
@@ -22,7 +22,7 @@ public class ImageService : IImageService
 
     public string GetLocalImagePath()
     {
-        return LocalImagePath;
+        return _localImagePath;
     }
 
     public async Task<string?> CreateThumbnail(string imageUrl, string nfTokenId)
@@ -34,7 +34,7 @@ public class ImageService : IImageService
             var fileName = nfTokenId + fileExtension;
 
             // Check if the image already exists locally
-            var localImagePath = Path.Combine(LocalImagePath, fileName);
+            var localImagePath = Path.Combine(_localImagePath, fileName);
             if (!System.IO.File.Exists(localImagePath))
             {
                 // The image does not exist, download it from the URL

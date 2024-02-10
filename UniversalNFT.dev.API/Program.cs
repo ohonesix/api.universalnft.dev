@@ -1,4 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
+using SixLabors.ImageSharp;
 using UniversalNFT.dev.API.Facades;
+using UniversalNFT.dev.API.Services.CacheCleanup;
 using UniversalNFT.dev.API.Services.Images;
 using UniversalNFT.dev.API.Services.NFT;
 using UniversalNFT.dev.API.Services.Providers;
@@ -21,6 +24,9 @@ builder.Services.AddSingleton<IImageService, ImageService>();
 builder.Services.AddSingleton<IOnXRPService, OnXRPService>();
 builder.Services.AddSingleton<IRulesEngine, RulesEngine>();
 builder.Services.AddScoped<INFTService, NFTService>();
+
+builder.Services.Configure<CacheFolderWatcherSettings>(builder.Configuration.GetSection("CacheFolderWatcher"));
+builder.Services.AddHostedService<CleanUpTask>();
 
 var app = builder.Build();
 
