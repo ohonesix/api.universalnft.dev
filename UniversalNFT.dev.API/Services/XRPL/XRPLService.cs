@@ -37,8 +37,6 @@ public class XRPLService : IXRPLService
                                             }
                                         ]}";
 
-            // TODO handle paging in response
-
             // Load account NFTs from Rippled
             var response = await _httpClient.PostAsync(_rippledUrl, new StringContent(body));
             if (response.IsSuccessStatusCode)
@@ -65,6 +63,61 @@ public class XRPLService : IXRPLService
                         }
 
                         return foundNft;
+                    }
+                }
+
+                // Page if we have to keep going
+                var seek = resultObj?.Result?.Marker;
+                while (!string.IsNullOrWhiteSpace(seek))
+                {
+                    body = @"{ ""method"": ""account_nfts"",
+                            ""params"": [
+                                            {
+                                                ""account"": """ + ownerAccount + @""",
+                                                ""ledger_index"": ""validated"",
+                                                ""limit"": 1000,
+                                                ""marker"": """ + seek + @"""
+                                            }
+                                        ]}";
+
+                    // Lets be kind to the free cluster servers, for better performance
+                    // host your own Rippled node and remove the next line! :)
+                    Thread.Sleep(200);
+
+                    var seekResponse = await _httpClient.PostAsync(_rippledUrl, new StringContent(body));
+                    if (seekResponse.IsSuccessStatusCode)
+                    {
+                        // Parse success response
+                        var seekData = await seekResponse.Content.ReadAsStringAsync();
+                        var seekResultObj = JsonSerializer.Deserialize<RippledAccountNFTsResponse>(seekData);
+
+                        // Check returned NFTs
+                        if (seekResultObj?.Result?.NFTs?.Length > 0)
+                        {
+                            // Find specific NFT
+                            var foundNft = seekResultObj.Result.NFTs?.Where(w => w.NFTokenID == tokenID).FirstOrDefault();
+
+                            if (foundNft != null)
+                            {
+                                if (!string.IsNullOrWhiteSpace(foundNft.URI))
+                                {
+                                    // convert the encoded image URL to something normal
+                                    var convertedUri = Encoding.UTF8.GetString(HexHelper.StringToByteArray(foundNft.URI));
+
+                                    // Normalise it
+                                    foundNft.URI = IPFSService.NormaliseUrl(convertedUri);
+                                }
+
+                                return foundNft;
+                            }
+                        }
+
+                        seek = seekResultObj?.Result?.Marker;
+                    }
+                    else
+                    {
+                        // Don't carry on seeking on error
+                        seek = null;
                     }
                 }
             }
