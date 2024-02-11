@@ -1,4 +1,5 @@
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Builder;
 using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Services.CacheCleanup;
 using UniversalNFT.dev.API.Services.Images;
@@ -44,8 +45,8 @@ app.UseIpRateLimiting();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
-
+// You may want to limit where this can be called from if you host your own
+// so it only works for your services. Or be nice and leave it open to others :)
 app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()
@@ -54,5 +55,9 @@ app.UseCors(builder => builder
 app.MapControllers();
 
 app.UseStaticFiles();
+
+// Redirect from the root URL to /swagger.
+app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();;
+app.MapGet("/about", () => Results.Redirect("https://universalnft.dev")).ExcludeFromDescription();;
 
 app.Run();

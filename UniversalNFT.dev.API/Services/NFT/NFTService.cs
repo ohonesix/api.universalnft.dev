@@ -53,7 +53,7 @@ namespace UniversalNFT.dev.API.Services.NFT
                     NFTokenID = NFTokenID,
                     OwnerAccount = OwnerWalletAddress,
                     ImageThumbnailCacheUrl = !string.IsNullOrWhiteSpace(thumbnailFilename)
-                        ? $"https://{_httpContextAccessor.HttpContext.Request.Host}/v1.0/Image?file={thumbnailFilename}"
+                        ? $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/v1.0/Image?file={thumbnailFilename}"
                         : string.Empty,
                     ImageUrl = imageUrl,
                     Timestamp = DateTime.UtcNow.ToString("O")
