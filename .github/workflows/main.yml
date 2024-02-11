@@ -24,6 +24,15 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Install dependencies main
+      working-directory: ./UniversalNFT.dev.API
+      run: dotnet restore
+
+    - name: Install dependencies test project
+      working-directory: ./UniversalNFT.dev.API.Tests
+      run: dotnet restore
+
     # Execute all unit tests in the solution
     - name: Execute unit tests
+      working-directory: ./UniversalNFT.dev.API.Tests
       run: dotnet test
