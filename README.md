@@ -2,6 +2,9 @@
 
 Please see the documentation here https://github.com/ohonesix/api.universalnft.dev/wiki
 
+[![Build and Package](https://github.com/ohonesix/api.universalnft.dev/actions/workflows/main.yml/badge.svg)](https://github.com/ohonesix/api.universalnft.dev/actions/workflows/main.yml)
+
+
 ## Docker
 
 Build using the Dockerfile
