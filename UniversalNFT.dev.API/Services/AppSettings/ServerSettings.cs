@@ -2,7 +2,6 @@
 {
     public class ServerSettings
     {
-        public string? Urls { get; set; }
         public string? ServerExternalDomain { get; set; }
     }
 }
