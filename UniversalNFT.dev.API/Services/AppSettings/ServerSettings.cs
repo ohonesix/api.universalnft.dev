@@ -2,7 +2,7 @@
 {
     public class ServerSettings
     {
-        public string? ServerListenHostPort { get; set; }
+        public string? Urls { get; set; }
         public string? ServerExternalDomain { get; set; }
     }
 }
