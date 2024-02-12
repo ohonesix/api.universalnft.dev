@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
+using UniversalNFT.dev.API.Services.AppSettings;
 
-namespace UniversalNFT.dev.API.Services.CacheCleanup;
+namespace UniversalNFT.dev.API.Services.ImageCacheCleanup;
 
-public class CleanUpTask : BackgroundService
+public class ImageCleanupTask : BackgroundService
 {
     private readonly TimeSpan _delay;
     private readonly string _localImagePath = Path.Combine(Directory.GetCurrentDirectory(), "ImageCache");
     private readonly long _maxFolderSize;
 
-    public CleanUpTask(IOptions<CacheFolderWatcherSettings> settings)
+    public ImageCleanupTask(IOptions<CacheFolderWatcherSettings> settings)
     {
         _maxFolderSize = settings.Value.MaxFolderSizeInBytes;
         _delay = TimeSpan.FromMinutes(settings.Value.PollingIntervalInMinutes);

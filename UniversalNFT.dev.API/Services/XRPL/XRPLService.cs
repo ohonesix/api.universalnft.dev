@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using UniversalNFT.dev.API.Helpers;
 using UniversalNFT.dev.API.Models.DTO;
+using UniversalNFT.dev.API.Services.AppSettings;
 using UniversalNFT.dev.API.Services.IPFS;
 
 namespace UniversalNFT.dev.API.Services.XRPL;

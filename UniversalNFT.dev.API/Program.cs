@@ -1,7 +1,7 @@
 using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Builder;
 using UniversalNFT.dev.API.Facades;
-using UniversalNFT.dev.API.Services.CacheCleanup;
+using UniversalNFT.dev.API.Services.AppSettings;
+using UniversalNFT.dev.API.Services.ImageCacheCleanup;
 using UniversalNFT.dev.API.Services.Images;
 using UniversalNFT.dev.API.Services.NFT;
 using UniversalNFT.dev.API.Services.Providers;
@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen(service => service.EnableAnnotations());
 
 // DI
 builder.Services.Configure<XRPLSettings>(builder.Configuration.GetSection("XRPLSettings"));
+builder.Services.Configure<ServerSettings>(builder.Configuration.GetSection("ServerSettings"));
 builder.Services.AddSingleton<IHttpFacade, HttpFacade>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IXRPLService, XRPLService>();
@@ -28,7 +29,7 @@ builder.Services.AddScoped<INFTService, NFTService>();
 
 // Image cache folder clean up job
 builder.Services.Configure<CacheFolderWatcherSettings>(builder.Configuration.GetSection("CacheFolderWatcher"));
-builder.Services.AddHostedService<CleanUpTask>();
+builder.Services.AddHostedService<ImageCleanupTask>();
 
 builder.Services.AddOptions();
 builder.Services.AddMemoryCache();
@@ -57,7 +58,7 @@ app.MapControllers();
 app.UseStaticFiles();
 
 // Redirect from the root URL to /swagger.
-app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();;
-app.MapGet("/about", () => Results.Redirect("https://universalnft.dev")).ExcludeFromDescription();;
+app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription(); ;
+app.MapGet("/about", () => Results.Redirect("https://universalnft.dev")).ExcludeFromDescription(); ;
 
 app.Run();

@@ -1,4 +1,6 @@
-﻿using UniversalNFT.dev.API.Models.API;
+﻿using Microsoft.Extensions.Options;
+using UniversalNFT.dev.API.Models.API;
+using UniversalNFT.dev.API.Services.AppSettings;
 using UniversalNFT.dev.API.Services.Images;
 using UniversalNFT.dev.API.Services.IPFS;
 using UniversalNFT.dev.API.Services.Rules;
@@ -8,6 +10,7 @@ namespace UniversalNFT.dev.API.Services.NFT
 {
     public class NFTService : INFTService
     {
+        private readonly ServerSettings _serverSettings;
         private readonly IXRPLService _xrplService;
         private readonly IRulesEngine _rulesEngine;
         private readonly IImageService _imageService;
@@ -17,13 +20,14 @@ namespace UniversalNFT.dev.API.Services.NFT
             IXRPLService xrplService,
             IRulesEngine rulesEngine,
             IImageService imageService,
-            IHttpContextAccessor httpContextAccessor
-        )
+            IHttpContextAccessor httpContextAccessor,
+            IOptions<ServerSettings> serverSettings)
         {
             _xrplService = xrplService;
             _rulesEngine = rulesEngine;
             _imageService = imageService;
             _httpContextAccessor = httpContextAccessor;
+            _serverSettings = serverSettings.Value;
         }
 
         public async Task<UniversalNFTResponseV1> GetNFT(
@@ -53,7 +57,7 @@ namespace UniversalNFT.dev.API.Services.NFT
                     NFTokenID = NFTokenID,
                     OwnerAccount = OwnerWalletAddress,
                     ImageThumbnailCacheUrl = !string.IsNullOrWhiteSpace(thumbnailFilename)
-                        ? $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/v1.0/Image?file={thumbnailFilename}"
+                        ? $"{_serverSettings.ServerExternalDomain}/v1.0/Image?file={thumbnailFilename}"
                         : string.Empty,
                     ImageUrl = imageUrl,
                     Timestamp = DateTime.UtcNow.ToString("O")

@@ -1,4 +1,4 @@
-﻿namespace UniversalNFT.dev.API.Services.CacheCleanup
+﻿namespace UniversalNFT.dev.API.Services.AppSettings
 {
     public class CacheFolderWatcherSettings
     {
