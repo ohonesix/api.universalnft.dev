@@ -1,3 +1,4 @@
+using System.Reflection;
 using AspNetCoreRateLimit;
 using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Services.AppSettings;
@@ -7,6 +8,7 @@ using UniversalNFT.dev.API.Services.NFT;
 using UniversalNFT.dev.API.Services.Providers;
 using UniversalNFT.dev.API.Services.Rules;
 using UniversalNFT.dev.API.Services.XRPL;
+using UniversalNFT.dev.API.SwaggerConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,13 @@ builder.Services.AddControllers();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(service => service.EnableAnnotations());
+builder.Services.AddSwaggerGen(options => {
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename), includeControllerXmlComments: true);
+
+    options.EnableAnnotations();
+    options.SchemaFilter<SwaggerTryItOutDefaultValue>();
+});
 
 // DI
 builder.Services.Configure<XRPLSettings>(builder.Configuration.GetSection("XRPLSettings"));

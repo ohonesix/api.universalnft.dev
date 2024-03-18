@@ -14,19 +14,16 @@ namespace UniversalNFT.dev.API.Services.NFT
         private readonly IXRPLService _xrplService;
         private readonly IRulesEngine _rulesEngine;
         private readonly IImageService _imageService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public NFTService(
             IXRPLService xrplService,
             IRulesEngine rulesEngine,
             IImageService imageService,
-            IHttpContextAccessor httpContextAccessor,
             IOptions<ServerSettings> serverSettings)
         {
             _xrplService = xrplService;
             _rulesEngine = rulesEngine;
             _imageService = imageService;
-            _httpContextAccessor = httpContextAccessor;
             _serverSettings = serverSettings.Value;
         }
 
@@ -61,6 +58,39 @@ namespace UniversalNFT.dev.API.Services.NFT
                         : string.Empty,
                     ImageUrl = imageUrl,
                     Timestamp = DateTime.UtcNow.ToString("O")
+                };
+            }
+            catch (Exception ex)
+            {
+                // Log it if you care
+            }
+
+            return null;
+        }
+
+        public async Task<Artv0Response> GetArtv0(
+            string NFTokenID,
+            string OwnerWalletAddress)
+        {
+            try
+            {
+                // Load the NFT from XRPL
+                var responseNFToken = await _xrplService.GetNFT(NFTokenID, OwnerWalletAddress);
+                if (responseNFToken == null)
+                    return null;
+
+                // Download and extract the media URL
+                var imageUrl = await _rulesEngine.ProcessNFToken(responseNFToken);
+                if (string.IsNullOrWhiteSpace(imageUrl))
+                    return null;
+
+                imageUrl = IPFSService.NormaliseUrl(imageUrl);
+
+                return new Artv0Response
+                {
+                    name = NFTokenID,
+                    image = imageUrl,
+                    description = $"Converted with {_serverSettings.ServerExternalDomain} at {DateTime.UtcNow.ToString("O")}"
                 };
             }
             catch (Exception ex)
