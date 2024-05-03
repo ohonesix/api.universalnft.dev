@@ -20,7 +20,8 @@ public static class IPFSService
             url = url.Replace("ipfs://", "ipfs://ipfs/");
         }
 
-        url = url.Replace("ipfs://", "https://cloudflare-ipfs.com/");
+        // TODO: Ideally we could set the ipfs server the backend uses in appsettings
+        url = url.Replace("ipfs://", "https://ipfs.io/");
 
         return url;
     }

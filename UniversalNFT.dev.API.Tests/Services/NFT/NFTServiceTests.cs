@@ -59,7 +59,7 @@ namespace UniversalNFT.dev.API.Tests.Services.NFT
             var result = await _nftService.GetNFT(nfTokenID, ownerWalletAddress);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             Assert.That(result.NFTokenID, Is.EqualTo(nfTokenID));
             Assert.That(result.OwnerAccount, Is.EqualTo(ownerWalletAddress));
             Assert.That(result.ImageThumbnailCacheUrl, Is.EqualTo($"https://api.universalnft.dev/v1.0/Image?file={expectedThumbnailFilename}"));
@@ -80,7 +80,7 @@ namespace UniversalNFT.dev.API.Tests.Services.NFT
             var result = await _nftService.GetNFT(nfTokenID, ownerWalletAddress);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace UniversalNFT.dev.API.Tests.Services.NFT
             var result = await _nftService.GetNFT(nfTokenID, ownerWalletAddress);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             Assert.That(result.NFTokenID, Is.EqualTo(nfTokenID));
             Assert.That(result.OwnerAccount, Is.EqualTo(ownerWalletAddress));
             Assert.That(result.ImageUrl, Is.EqualTo(expectedImageUrl));
@@ -121,7 +121,7 @@ namespace UniversalNFT.dev.API.Tests.Services.NFT
             var result = await _nftService.GetArtv0(nfTokenID, ownerWalletAddress);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
     }
 }
