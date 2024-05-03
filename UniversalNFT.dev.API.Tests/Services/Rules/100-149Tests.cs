@@ -72,7 +72,7 @@ namespace UniversalNFT.dev.API.Tests.Services.Rules
         
         public async Task Given_100To_149NFT_ReturnsImageAsync(
             string projectName,
-            string image,
+            string? image,
             string metaJson)
         {
             // Arrange
