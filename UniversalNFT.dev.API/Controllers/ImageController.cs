@@ -16,7 +16,7 @@ namespace UniversalNFT.dev.API.Controllers
 
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> GetThumbnail(string file)
+        public async Task<IActionResult> Get(string file)
         {
             // Get the extension from the URL
             var fileExtension = Path.GetExtension(file);

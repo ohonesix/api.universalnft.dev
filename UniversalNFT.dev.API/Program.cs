@@ -54,13 +54,6 @@ app.UseIpRateLimiting();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// You may want to limit where this can be called from if you host your own
-// so it only works for your services. Or be nice and leave it open to others :)
-app.UseCors(builder => builder
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
-
 app.MapControllers();
 
 app.UseStaticFiles();
@@ -68,5 +61,12 @@ app.UseStaticFiles();
 // Redirect from the root URL to /swagger.
 app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription(); ;
 app.MapGet("/about", () => Results.Redirect("https://universalnft.dev")).ExcludeFromDescription(); ;
+
+// You may want to limit where this can be called from if you host your own
+// so it only works for your services. Or be nice and leave it open to others :)
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.Run();
