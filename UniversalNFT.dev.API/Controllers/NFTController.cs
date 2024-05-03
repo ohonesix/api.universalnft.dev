@@ -7,7 +7,7 @@ using UniversalNFT.dev.API.SwaggerConfig;
 namespace UniversalNFT.dev.API.Controllers
 {
     /// <summary>
-    /// Load and translate metadata for an NFToken on the blockchain and return it in the specified format.
+    /// Load and translate metadata for a specfic NFToken on the blockchain and return it in the specified format.
     /// </summary>
     [ApiController]
     [Route("v1.0/NFT")]

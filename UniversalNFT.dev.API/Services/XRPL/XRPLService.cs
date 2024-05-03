@@ -83,10 +83,12 @@ public class XRPLService : IXRPLService
                                         ]}";
 
                     // Lets be kind to the free cluster servers, for better performance
-                    // host your own Rippled node and remove the next line! :)
-                    Thread.Sleep(200);
+                    // host your own Rippled node and disable with appsettings.json
+                    // "XRPLSettings": { "EnableDelay" : false }
+                    if (_xrplSettings.EnableDelay)
+                        Thread.Sleep(200);
 
-                    var seekResponse = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress, 
+                    var seekResponse = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress,
                         new StringContent(body));
                     if (seekResponse.IsSuccessStatusCode)
                     {
@@ -131,5 +133,95 @@ public class XRPLService : IXRPLService
         }
 
         return null;
+    }
+
+    public async Task<IEnumerable<RippledAccountNFToken>> GetAllNFTs(string ownerAccount)
+    {
+        var accountNfts = new List<RippledAccountNFToken>();
+
+        try
+        {
+            // Setup the request body to load account NFTs
+            var body = @"{ ""method"": ""account_nfts"",
+                        ""params"": [
+                                        {
+                                            ""account"": """ + ownerAccount + @""",
+                                            ""ledger_index"": ""validated"",
+                                            ""limit"": 1000
+                                        }
+                                    ]}";
+
+            // Load account NFTs from Rippled
+            var response = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress, new StringContent(body));
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse success response
+                var data = await response.Content.ReadAsStringAsync();
+                var resultObj = JsonSerializer.Deserialize<RippledAccountNFTsResponse>(data);
+
+                foreach (var accountNft in resultObj?.Result?.NFTs ?? Enumerable.Empty<RippledAccountNFToken>())
+                {
+                    if (!string.IsNullOrWhiteSpace(accountNft.URI))
+                    {
+                        var convertedUri = Encoding.UTF8.GetString(HexHelper.StringToByteArray(accountNft.URI));
+                        accountNft.URI = IPFSService.NormaliseUrl(convertedUri);
+                    }
+                    accountNfts.Add(accountNft);
+                }
+
+                // Page if we have to keep going
+                var seek = resultObj?.Result?.Marker;
+                while (!string.IsNullOrWhiteSpace(seek))
+                {
+                    body = @"{ ""method"": ""account_nfts"",
+                        ""params"": [
+                                        {
+                                            ""account"": """ + ownerAccount + @""",
+                                            ""ledger_index"": ""validated"",
+                                            ""limit"": 1000,
+                                            ""marker"": """ + seek + @"""
+                                        }
+                                    ]}";
+
+                    // Lets be kind to the free cluster servers, for better performance
+                    // host your own Rippled node and disable with appsettings.json
+                    // "XRPLSettings": { "EnableDelay" : false }
+                    if (_xrplSettings.EnableDelay)
+                        Thread.Sleep(200);
+
+                    var seekResponse = await _httpClient.PostAsync(_xrplSettings.XRPLServerAddress,
+                        new StringContent(body));
+                    if (seekResponse.IsSuccessStatusCode)
+                    {
+                        // Parse success response
+                        var seekData = await seekResponse.Content.ReadAsStringAsync();
+                        var seekResultObj = JsonSerializer.Deserialize<RippledAccountNFTsResponse>(seekData);
+
+                        foreach (var seekAccountNft in seekResultObj?.Result?.NFTs ?? Enumerable.Empty<RippledAccountNFToken>())
+                        {
+                            if (!string.IsNullOrWhiteSpace(seekAccountNft.URI))
+                            {
+                                var convertedUri = Encoding.UTF8.GetString(HexHelper.StringToByteArray(seekAccountNft.URI));
+                                seekAccountNft.URI = IPFSService.NormaliseUrl(convertedUri);
+                            }
+                            accountNfts.Add(seekAccountNft);
+                        }
+
+                        seek = seekResultObj?.Result?.Marker;
+                    }
+                    else
+                    {
+                        // Don't carry on seeking on error
+                        seek = null;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting NFT in XRPLService");
+        }
+
+        return accountNfts;
     }
 }

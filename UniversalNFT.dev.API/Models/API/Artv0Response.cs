@@ -11,7 +11,7 @@ namespace UniversalNFT.dev.API.Models.API
         public string nftType { get => "art.v0"; }
 
         [SwaggerSchema("The NFTokenID", Nullable = false)]
-        public string name {  get; set; }
+        public string name { get; set; }
 
         [SwaggerSchema("The date and time in ISO format this request was last generated on the server e.g. 2023-05-20T15:30:00.0000000+00:00", Nullable = false)]
         public string description { get; set; }
