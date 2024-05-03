@@ -27,6 +27,9 @@ namespace UniversalNFT.dev.API.Services.NFT
             _serverSettings = serverSettings.Value;
         }
 
+        /// <summary>
+        /// Load a specific NFT from a given wallet and return it in our format
+        /// </summary>
         public async Task<UniversalNFTResponseV1> GetNFT(
             string NFTokenID,
             string OwnerWalletAddress)
@@ -68,6 +71,53 @@ namespace UniversalNFT.dev.API.Services.NFT
             return null;
         }
 
+        /// <summary>
+        /// Load all NFTs in a wallet and process them into our format
+        /// </summary>
+        public async Task<IEnumerable<UniversalNFTResponseV1>> GetAllNFTs(string OwnerWalletAddress)
+        {
+            var accountNftsResult = new List<UniversalNFTResponseV1>();
+            try
+            {
+                // Load the NFT from XRPL
+                var accountNfts = await _xrplService.GetAllNFTs(OwnerWalletAddress);
+                if (accountNfts?.Any() != true)
+                    return Enumerable.Empty<UniversalNFTResponseV1>();
+
+                foreach (var accountNft in accountNfts)
+                {
+                    var imageUrl = await _rulesEngine.ProcessNFToken(accountNft) ?? string.Empty;
+                    imageUrl = IPFSService.NormaliseUrl(imageUrl);
+
+                    // We have an imageUrl extracted! Create the thumbnail if it doesn't exist
+                    // in our cache.
+                    var thumbnailFilename = await _imageService.CreateThumbnail(imageUrl, accountNft.NFTokenID);
+
+                    accountNftsResult.Add(new UniversalNFTResponseV1
+                    {
+                        NFTokenID = accountNft.NFTokenID,
+                        OwnerAccount = OwnerWalletAddress,
+                        ImageThumbnailCacheUrl = !string.IsNullOrWhiteSpace(thumbnailFilename)
+                        ? $"{_serverSettings.ServerExternalDomain}/v1.0/Image?file={thumbnailFilename}"
+                        : string.Empty,
+                        ImageUrl = imageUrl,
+                        Timestamp = DateTime.UtcNow.ToString("O")
+                    });
+                }
+
+                return accountNftsResult;
+            }
+            catch (Exception ex)
+            {
+                // Log it if you care
+            }
+
+            return Enumerable.Empty<UniversalNFTResponseV1>();
+        }
+
+        /// <summary>
+        /// Load a specific NFT from a given wallet and return it in art.v0 format
+        /// </summary>
         public async Task<Artv0Response> GetArtv0(
             string NFTokenID,
             string OwnerWalletAddress)

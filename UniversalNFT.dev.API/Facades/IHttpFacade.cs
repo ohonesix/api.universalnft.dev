@@ -1,5 +1,4 @@
-﻿
-namespace UniversalNFT.dev.API.Facades
+﻿namespace UniversalNFT.dev.API.Facades
 {
     public interface IHttpFacade
     {
