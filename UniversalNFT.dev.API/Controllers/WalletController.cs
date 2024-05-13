@@ -24,8 +24,14 @@ namespace UniversalNFT.dev.API.Controllers
         /// Return all NFTs in a wallet in our UniversalNFTResponseV1 format.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, "The wallet NFTs are loaded and thumbnail cached sucessfully", typeof(IEnumerable<UniversalNFTResponseV1>))]
+        [SwaggerResponse(200,
+            "The wallet NFTs are loaded and thumbnail cached sucessfully",
+            typeof(IEnumerable<UniversalNFTResponseV1>))]
         [SwaggerResponse(404, "The wallet could not be found")]
+        [ResponseCache(
+            Duration = 300,
+            VaryByQueryKeys = ["OwnerWalletAddress"],
+            Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(
             [SwaggerParameter("The XRPL wallet to load NFTs from", Required = true)]
             [SwaggerTryItOutDefaultValue("rPpMSFxzjqJ6AGgEZ8kgbQeeo6UJvUkVmb")]
