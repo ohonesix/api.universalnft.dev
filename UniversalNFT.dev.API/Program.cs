@@ -13,7 +13,6 @@ using UniversalNFT.dev.API.SwaggerConfig;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddResponseCaching();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -48,17 +47,9 @@ builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddInMemoryRateLimiting();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
-
-// We cache
-app.Use(async (context, next) =>
-{
-    context.Request.Headers.Remove("Pragma");
-    context.Request.Headers.Remove("Cache-Control");
-    await next();
-});
-app.UseResponseCaching();
 
 app.UseIpRateLimiting();
 
@@ -79,5 +70,14 @@ app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+// We cache
+app.Use(async (context, next) =>
+{
+    context.Request.Headers.Remove("Pragma");
+    context.Request.Headers.Remove("Cache-Control");
+    await next();
+});
+app.UseResponseCaching();
 
 app.Run();
