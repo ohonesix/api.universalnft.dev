@@ -1,6 +1,7 @@
 using System.Reflection;
 using AspNetCoreRateLimit;
 using UniversalNFT.dev.API.Facades;
+using UniversalNFT.dev.API.Middleware;
 using UniversalNFT.dev.API.Services.AppSettings;
 using UniversalNFT.dev.API.Services.ImageCacheCleanup;
 using UniversalNFT.dev.API.Services.Images;
@@ -71,13 +72,14 @@ app.UseCors(builder => builder
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-// We cache
+// We cache. Ignore incoming cache control headers.
 app.Use(async (context, next) =>
 {
     context.Request.Headers.Remove("Pragma");
     context.Request.Headers.Remove("Cache-Control");
     await next();
 });
+app.UseMiddleware<NoCacheForNotFoundMiddleware>();
 app.UseResponseCaching();
 
 app.Run();
