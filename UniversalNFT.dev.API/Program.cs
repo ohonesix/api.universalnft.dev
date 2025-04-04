@@ -1,5 +1,6 @@
 using System.Reflection;
 using AspNetCoreRateLimit;
+using Microsoft.Extensions.Options;
 using UniversalNFT.dev.API.Facades;
 using UniversalNFT.dev.API.Middleware;
 using UniversalNFT.dev.API.Services.AppSettings;
@@ -9,6 +10,7 @@ using UniversalNFT.dev.API.Services.NFT;
 using UniversalNFT.dev.API.Services.Providers;
 using UniversalNFT.dev.API.Services.Rules;
 using UniversalNFT.dev.API.Services.XRPL;
+using UniversalNFT.dev.API.Services.IPFS;
 using UniversalNFT.dev.API.SwaggerConfig;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,7 @@ builder.Services.AddSwaggerGen(options =>
 // DI
 builder.Services.Configure<XRPLSettings>(builder.Configuration.GetSection("XRPLSettings"));
 builder.Services.Configure<ServerSettings>(builder.Configuration.GetSection("ServerSettings"));
+builder.Services.Configure<IPFSSettings>(builder.Configuration.GetSection("IPFSSettings"));
 builder.Services.AddSingleton<IHttpFacade, HttpFacade>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IXRPLService, XRPLService>();
@@ -51,6 +54,10 @@ builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>()
 builder.Services.AddResponseCaching();
 
 var app = builder.Build();
+
+// Initialize static services
+var ipfsSettings = app.Services.GetRequiredService<IOptions<IPFSSettings>>().Value;
+IPFSService.Initialize(ipfsSettings);
 
 app.UseIpRateLimiting();
 
