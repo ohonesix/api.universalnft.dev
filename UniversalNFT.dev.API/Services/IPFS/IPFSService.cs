@@ -1,9 +1,17 @@
-﻿using System.Text.RegularExpressions;
+﻿﻿﻿﻿using System.Text.RegularExpressions;
+using UniversalNFT.dev.API.Services.AppSettings;
 
 namespace UniversalNFT.dev.API.Services.IPFS;
 
 public static class IPFSService
 {
+    private static string _ipfsServerAddress = "https://ipfs.io/";
+
+    public static void Initialize(IPFSSettings settings)
+    {
+        _ipfsServerAddress = settings.IPFSServerAddress;
+    }
+
     public static string NormaliseUrl(string url)
     {
         // Is it well formed
@@ -20,8 +28,7 @@ public static class IPFSService
             url = url.Replace("ipfs://", "ipfs://ipfs/");
         }
 
-        // TODO: Ideally we could set the ipfs server the backend uses in appsettings
-        url = url.Replace("ipfs://", "https://ipfs.io/");
+        url = url.Replace("ipfs://", _ipfsServerAddress);
 
         return url;
     }
